@@ -1,0 +1,20 @@
+# Vector store / AI model files
+
+*.nc
+*.zip
+*.tar.gz
+# Cache
+cache/
+*.cache
+
+# Python
+*.pyc
+__pycache__/
+
+
+# Environment variables
+.env
+.env.*
+
+# Logs
+*.log
