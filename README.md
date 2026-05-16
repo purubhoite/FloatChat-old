@@ -65,8 +65,8 @@ FloatChat is an AI-powered conversational interface for exploring Indian Ocean *
 
 ```bash
 # Clone the repository
-git clone https://github.com/purubhoite/SIH---Final-with-frontend-.git
-cd SIH---Final-with-frontend-
+git clone https://github.com/purubhoite/FloatChat.git
+cd FloatChat
 
 # Install dependencies
 pip install -r requirements.txt  # if available, else install manually:
