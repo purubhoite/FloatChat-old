@@ -185,7 +185,7 @@ This project was developed as part of the **Smart India Hackathon (SIH)** for th
 
 ## 👥 Team
 
-Developed by **Puru Bhoite** and team.
+Developed by **Team SeaQuery_08**.
 
 ---
 
