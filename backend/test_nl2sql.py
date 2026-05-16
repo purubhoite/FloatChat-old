@@ -5,7 +5,6 @@ Small CLI to test the NL→SQL pipeline end-to-end:
 
 Flow:
   user_query
-    → rewrite_query (optional)
     → RAG (query_rag)
     → LLM (generate_sql)
     → sql_guard.ensure_safe_sql + run_user_sql
@@ -25,7 +24,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from .nl2sql_agent import generate_sql, repair_sql
 from .sql_guard import run_user_sql, SqlValidationError
-from .query_rewriter import rewrite_query
+
 
 
 # Some starter test queries you can tweak
@@ -43,14 +42,7 @@ def run_single_query(user_query: str, max_rows: int = 200) -> None:
     print(f"USER QUERY: {user_query}")
     print("=" * 80)
 
-    # 1) Optional: show rewritten query the LLM uses for RAG + planning
-    rewritten = rewrite_query(user_query)
-    if rewritten != user_query:
-        print(f"\n[Rewritten Query]\n{rewritten}\n")
-    else:
-        print("\n[Rewritten Query]\n(no change)\n")
-
-    # 2) Call NL→SQL agent
+    # 1) Call NL→SQL agent
     plan = generate_sql(user_query)
     sql = plan.get("sql", "").strip()
     explanation = plan.get("explanation", "").strip()

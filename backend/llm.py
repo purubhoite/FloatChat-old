@@ -1,15 +1,22 @@
 # backend/llm.py
 
+"""
+LLM backend module supporting both Gemini API and local Ollama models.
+Controlled by LLM_BACKEND environment variable.
+"""
+
 import os
 from typing import Dict, Any, Literal
 
+# Backend configuration - defaults to local_ollama
 LLM_BACKEND: Literal["gemini", "local_ollama"] = os.getenv("LLM_BACKEND", "gemini")
 OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3:instruct")
 OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434/api/generate")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 
 
 # ---------------- Gemini backend ----------------
-def _call_gemini_json(prompt: str, model_name: str = "gemini-2.5-flash") -> str:
+def _call_gemini_json(prompt: str) -> str:
     """
     Call Gemini and return a JSON string (model is instructed to respond with JSON).
     """
@@ -18,7 +25,7 @@ def _call_gemini_json(prompt: str, model_name: str = "gemini-2.5-flash") -> str:
 
     genai.configure(api_key=get_gemini_api_key())
     model = genai.GenerativeModel(
-        model_name,
+        GEMINI_MODEL,
         generation_config={"response_mime_type": "application/json"},
     )
     resp = model.generate_content(prompt)
@@ -64,6 +71,10 @@ def call_llm_json(prompt: str) -> str:
     """
     Return a JSON string from the configured backend.
     The caller will do json.loads(...) on this.
+    
+    Backend controlled by LLM_BACKEND env var:
+    - "local_ollama" (default): Uses local Ollama model
+    - "gemini": Uses Google Gemini API
     """
     if LLM_BACKEND == "gemini":
         return _call_gemini_json(prompt)
